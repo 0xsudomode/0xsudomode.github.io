@@ -1,6 +1,6 @@
 ---
 title: yana Challenge Solution - AlphCTF2k24
-date: 2023-11-27 04:23:00 
+date: 2024-03-08 20:23:00 
 categories: [CTF]
 tags: [android,reversing,apk,firebase,frida,AlphCTF2k24] 
 ---
