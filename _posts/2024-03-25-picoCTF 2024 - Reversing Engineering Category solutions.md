@@ -231,7 +231,7 @@ Launch the instance , submit the password and you'll get the flag.
 
 Flag : `picoCTF{s0lv3_angry_symb0ls_4656b68e}`
 
-- The second way to tackle the problem was by using angr to solve it faster. I hadn't used angr before, so I had to figure out how to do it. As I worked on the challenge, I noticed that the output from angr was in raw bytes. Even though the serial was okay, I wasn't completely satisfied because I wanted the output to contain only alphabets like the previous script. <br> I tried to use a constraint to achieve this, but I couldn't figure it out with angr. That's when I reached out to my friend <a href="https://www.linkedin.com/in/kara-mohamed-mourtadha-658a02280/">Mohamed</a> for help. He provided a solution to my problem. Big thanks to Mohamed for his help! 🙏 , Also I would like to Thank my friend <href="https://itskarudo.github.io/">karudo</a> for providing help regarding `angr` 🙏. 
+- The second way to tackle the problem was by using angr to solve it faster. I hadn't used angr before, so I had to figure out how to do it. As I worked on the challenge, I noticed that the output from angr was in raw bytes. Even though the serial was okay, I wasn't completely satisfied because I wanted the output to contain only alphabets like the previous script. <br> I tried to use a constraint to achieve this, but I couldn't figure it out with angr. That's when I reached out to my friend <a href="https://www.linkedin.com/in/kara-mohamed-mourtadha-658a02280/">Mohamed</a> for help. He provided a solution to my problem. Big thanks to Mohamed for his help! 🙏 , Also I would like to Thank my friend <a href="https://itskarudo.github.io/">karudo</a> for providing help regarding `angr` 🙏. 
 
 
 ## Solving the challenge using angr 
