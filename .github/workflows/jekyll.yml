@@ -1,8 +1,3 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 # Sample workflow for building and deploying a Jekyll site to GitHub Pages
 name: Deploy Jekyll site to Pages
 
@@ -31,22 +26,43 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
+
+      # Ensure Ruby is properly installed
+      - name: Install Ruby using ruby-build (if needed)
+        run: |
+          if ! command -v ruby &> /dev/null; then
+            echo "Ruby not found, installing manually..."
+            ruby-build 3.1.4 /opt/hostedtoolcache/Ruby/3.1.4/x64
+            touch /opt/hostedtoolcache/Ruby/3.1.4/x64.complete
+          else
+            echo "Ruby is already installed: $(ruby -v)"
+          fi
+        shell: bash
+
       - name: Setup Ruby
-        uses: ruby/setup-ruby@8575951200e472d5f2d95c625da0c7bec8217c42 # v1.161.0
+        uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.1' # Not needed with a .ruby-version file
-          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-          cache-version: 0 # Increment this number if you need to re-download cached gems
+          ruby-version: '3.1' # Uses Ruby 3.1
+          bundler-cache: true # Runs 'bundle install' and caches gems
+          cache-version: 1 # Increment if caching issues occur
+
+      # Ensure dependencies install correctly
+      - name: Install Bundler and Dependencies
+        run: |
+          bundle install || { echo "Bundle install failed!"; exit 1; }
+
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
+
       - name: Build with Jekyll
         # Outputs to the './_site' directory by default
         run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
         env:
           JEKYLL_ENV: production
+
       - name: Upload artifact
         # Automatically uploads an artifact from the './_site' directory by default
         uses: actions/upload-pages-artifact@v3
