@@ -2,53 +2,33 @@
 name: Deploy Jekyll site to Pages
 
 on:
-  # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
-  # Build job
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # Ensure Ruby is properly installed
-      - name: Install Ruby using ruby-build (if needed)
-        run: |
-          if ! command -v ruby &> /dev/null; then
-            echo "Ruby not found, installing manually..."
-            ruby-build 3.1.4 /opt/hostedtoolcache/Ruby/3.1.4/x64
-            touch /opt/hostedtoolcache/Ruby/3.1.4/x64.complete
-          else
-            echo "Ruby is already installed: $(ruby -v)"
-          fi
-        shell: bash
-
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.1' # Uses Ruby 3.1
-          bundler-cache: true # Runs 'bundle install' and caches gems
-          cache-version: 1 # Increment if caching issues occur
+          ruby-version: '3.1'
+          bundler-cache: true
+          cache-version: 1
 
-      # Ensure dependencies install correctly
       - name: Install Bundler and Dependencies
         run: |
           bundle install || { echo "Bundle install failed!"; exit 1; }
@@ -58,19 +38,16 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Build with Jekyll
-        # Outputs to the './_site' directory by default
         run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
         env:
           JEKYLL_ENV: production
 
       - name: Upload artifact
-        # Use the latest stable version to avoid deprecated warnings
-        uses: actions/upload-artifact@v3.1.0
+        uses: actions/upload-artifact@v4 # ✅ Updated to latest version
         with:
           name: jekyll-site
           path: ./_site
 
-  # Deployment job
   deploy:
     environment:
       name: github-pages
